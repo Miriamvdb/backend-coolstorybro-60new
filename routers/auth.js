@@ -3,12 +3,12 @@ const { Router } = require("express");
 const { toJWT } = require("../auth/jwt");
 const authMiddleware = require("../auth/middleware");
 const User = require("../models/").user;
+const Space = require("../models/").space;
 const { SALT_ROUNDS } = require("../config/constants");
 
 const router = new Router();
 
-
-//login 
+//login
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -36,8 +36,7 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-
-//signup
+//signup // F3 http POST :4000/auth/signup name=Mango email=mango@mango.com password=mango
 router.post("/signup", async (req, res) => {
   const { email, password, name } = req.body;
   if (!email || !password || !name) {
@@ -53,9 +52,19 @@ router.post("/signup", async (req, res) => {
 
     delete newUser.dataValues["password"]; // don't send back the password hash
 
+    // F3 Signing up creates a new space..
+    const newSpace = await Space.create({
+      title: `${name}s Space`,
+      description: null,
+      backgroundColor: "#ffffff",
+      color: "#000000",
+      // userId: newUser.id,
+    });
+
     const token = toJWT({ userId: newUser.id });
 
-    res.status(201).json({ token, user: newUser.dataValues });
+    // F3 ..Add newSpace in response!
+    res.status(201).json({ token, user: newUser.dataValues, space: newSpace });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       return res
