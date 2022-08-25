@@ -58,7 +58,7 @@ router.post("/signup", async (req, res) => {
       description: null,
       backgroundColor: "#ffffff",
       color: "#000000",
-      // userId: newUser.id,
+      userId: newUser.id, // EXTRA: Creates the userId in space table (instead of NULL)!
     });
 
     const token = toJWT({ userId: newUser.id });
