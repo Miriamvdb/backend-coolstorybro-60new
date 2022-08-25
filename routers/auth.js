@@ -4,11 +4,12 @@ const { toJWT } = require("../auth/jwt");
 const authMiddleware = require("../auth/middleware");
 const User = require("../models/").user;
 const Space = require("../models/").space;
+const Story = require("../models").story; // F4
 const { SALT_ROUNDS } = require("../config/constants");
 
 const router = new Router();
 
-//login
+//login - // F4 http POST :4000/auth/login email=mango@mango.com password=mango
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -27,9 +28,17 @@ router.post("/login", async (req, res, next) => {
       });
     }
 
+    // F4 Loggin in finds the mySpace..
+    const mySpace = await Space.findOne({
+      where: { userId: user.id },
+      include: [Story],
+    });
+
     delete user.dataValues["password"]; // don't send back the password hash
     const token = toJWT({ userId: user.id });
-    return res.status(200).send({ token, user: user.dataValues });
+    return res
+      .status(200)
+      .send({ token, user: user.dataValues, mySpace: mySpace }); // F4 ..send mySpace in the response
   } catch (error) {
     console.log(error);
     return res.status(400).send({ message: "Something went wrong, sorry" });
@@ -79,10 +88,18 @@ router.post("/signup", async (req, res) => {
 // The /me endpoint can be used to:
 // - get the users email & name using only their token
 // - checking if a token is (still) valid
+// F4: http GET :4000/auth/me Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY2MTQzOTYzNywiZXhwIjoxNjYxNDQ2ODM3fQ.5ee1nmF2UEnZ1-xmceqD2IfmK5ekE_C_9r66jZ45aLQ"
 router.get("/me", authMiddleware, async (req, res) => {
   // don't send back the password hash
   delete req.user.dataValues["password"];
-  res.status(200).send({ ...req.user.dataValues });
+
+  // F4 /me finds the mySpace..
+  const mySpace = await Space.findOne({
+    where: { userId: req.user.id },
+    include: [Story],
+  });
+
+  res.status(200).send({ ...req.user.dataValues, mySpace: mySpace }); // F4 .. send mySpace in response
 });
 
 module.exports = router;
