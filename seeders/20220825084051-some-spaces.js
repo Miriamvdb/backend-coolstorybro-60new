@@ -12,7 +12,7 @@ module.exports = {
           color: "#fa2802",
           createdAt: new Date(),
           updatedAt: new Date(),
-          // userId: 1,
+          userId: 1,
         },
         {
           title: "Banana Space",
@@ -21,7 +21,7 @@ module.exports = {
           color: "#f7ad00",
           createdAt: new Date(),
           updatedAt: new Date(),
-          // userId: 2,
+          userId: 2,
         },
         {
           title: "Coconut Space",
@@ -30,7 +30,7 @@ module.exports = {
           color: "#048fc4",
           createdAt: new Date(),
           updatedAt: new Date(),
-          // userId: 3,
+          userId: 3,
         },
       ],
       {}

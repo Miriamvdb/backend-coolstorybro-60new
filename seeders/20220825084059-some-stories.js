@@ -12,7 +12,7 @@ module.exports = {
           imageUrl: "https://static.dw.com/image/47429859_401.jpg",
           createdAt: new Date("2022-06-23T13:42:26.396Z"),
           updatedAt: new Date(),
-          // spaceId: 1,
+          spaceId: 1,
         },
         {
           name: "Lovestory Apples",
@@ -22,7 +22,7 @@ module.exports = {
             "https://cdn.quotesgram.com/img/75/81/255487457-Apple-love-quote-hd.jpg",
           createdAt: new Date("2022-06-23T13:42:26.396Z"),
           updatedAt: new Date(),
-          // spaceId: 1,
+          spaceId: 1,
         },
         {
           name: "Banana test story",
@@ -32,7 +32,7 @@ module.exports = {
             "https://images.immediate.co.uk/production/volatile/sites/30/2017/01/Bananas-218094b-scaled.jpg",
           createdAt: new Date("2022-06-23T13:42:26.396Z"),
           updatedAt: new Date(),
-          // spaceId: 2,
+          spaceId: 2,
         },
         {
           name: "Lovestory Bananas",
@@ -42,7 +42,7 @@ module.exports = {
             "https://image.shutterstock.com/image-photo/two-peeled-bananas-arranged-together-260nw-1511590349.jpg",
           createdAt: new Date("2022-06-23T13:42:26.396Z"),
           updatedAt: new Date(),
-          // spaceId: 2,
+          spaceId: 2,
         },
         {
           name: "Are Coconuts fruits?",
@@ -52,7 +52,7 @@ module.exports = {
             "https://cdn.shopify.com/s/files/1/2372/1439/articles/April_Blog_image_1024x.jpg?v=1552159727",
           createdAt: new Date(),
           updatedAt: new Date(),
-          // spaceId: 3,
+          spaceId: 3,
         },
         {
           name: "Lovestory Coconuts",
@@ -62,7 +62,7 @@ module.exports = {
             "https://i.ndtvimg.com/mt/cooks/2012-11/coconut-water_med.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=886",
           createdAt: new Date(),
           updatedAt: new Date(),
-          // spaceId: 3,
+          spaceId: 3,
         },
       ],
       {}
