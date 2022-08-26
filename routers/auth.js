@@ -70,11 +70,16 @@ router.post("/signup", async (req, res) => {
       userId: newUser.id, // EXTRA: Creates the userId in space table (instead of NULL)!
     });
 
+    const fullSpace = await Space.findByPk(newSpace.id, {
+      include: [Story],
+    });
+
     const token = toJWT({ userId: newUser.id });
 
     // F3 ..Add newSpace in response!
-    res.status(201).json({ token, user: newUser.dataValues, space: newSpace });
+    res.status(201).json({ token, user: newUser.dataValues, space: fullSpace });
   } catch (error) {
+    console.log(error.message);
     if (error.name === "SequelizeUniqueConstraintError") {
       return res
         .status(400)
@@ -99,7 +104,7 @@ router.get("/me", authMiddleware, async (req, res) => {
     include: [Story],
   });
 
-  res.status(200).send({ ...req.user.dataValues, mySpace: mySpace }); // F4 .. send mySpace in response
+  res.status(200).send({ user: req.user.dataValues, mySpace: mySpace }); // F4 .. send mySpace in response
 });
 
 module.exports = router;
