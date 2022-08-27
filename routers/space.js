@@ -91,4 +91,20 @@ router.post("/:id/stories", authMiddleware, async (req, res) => {
   return res.status(201).send({ message: "New story created", story });
 });
 
+// F6: UPDATE space with corresponding id - http PATCH :4000/spaces/1 Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY2MTYyOTc0MCwiZXhwIjoxNjYxNjM2OTQwfQ.bGSxdLlVosDsGO3Z1AVs-DLqMivwUmxuJNRQP_yvw1M" title="Aardbei Space" description="A space about aardbeien" backgroundColor="#fac0db" color="#6b1a40"
+router.patch("/:id", authMiddleware, async (req, res) => {
+  const space = await Space.findByPk(req.params.id);
+  if (!space.userId === req.user.id) {
+    return res
+      .status(403)
+      .send({ message: "You are not authorized to update this space" });
+  }
+
+  const { title, description, backgroundColor, color } = req.body;
+
+  await space.update({ title, description, backgroundColor, color });
+
+  return res.status(200).send({ space });
+});
+
 module.exports = router;
