@@ -58,4 +58,37 @@ router.delete(
   }
 );
 
+// F5: POST a new story to space with corresponding id
+// Try without authMiddleware first !!!
+// http POST :4000/spaces/1/stories Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY2MTUyMzIwNiwiZXhwIjoxNjYxNTMwNDA2fQ.eEvHM5r1pjEyVyZck2_LLFFJnBc9j1go28tjkrKs-b0" name="Spongebob & Miriam Story" content="Some fake text to create a story about Spongebob, im in feature 5 now, Groetjes Miriam" imageUrl="https://sm.ign.com/ign_nl/news/n/nickelodeo/nickelodeon-announces-spongebob-squarepants-prequel-series-a_zeuq.jpg"
+router.post("/:id/stories", authMiddleware, async (req, res) => {
+  const space = await Space.findByPk(req.params.id);
+  console.log(space);
+
+  if (space === null) {
+    return res.status(404).send({ message: "This space does not exist" });
+  }
+
+  if (!space.userId === req.user.id) {
+    return res
+      .status(403)
+      .send({ message: "You are not authorized to update this space" });
+  }
+
+  const { name, imageUrl, content } = req.body;
+
+  if (!name) {
+    return res.status(400).send({ message: "A story must have a name" });
+  }
+
+  const story = await Story.create({
+    name,
+    imageUrl,
+    content,
+    spaceId: space.id,
+  });
+
+  return res.status(201).send({ message: "New story created", story });
+});
+
 module.exports = router;
